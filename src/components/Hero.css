@@ -1,0 +1,168 @@
+/* Hero Section */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+  min-height: 80vh;
+  background: linear-gradient(135deg, #2d2d2d 0%, #010a1a 100%);
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Hero Content */
+.hero-content {
+  max-width: 50%;
+  animation: fadeInLeft 0.8s ease-out;
+}
+
+.hero-heading {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 700;
+  font-size: 3rem;
+  line-height: 1.2;
+  color: #f3f3f3;
+  margin: 0 0 1rem;
+  transition: color 0.3s ease;
+}
+
+
+.hero-description {
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: #9e9494;
+  margin-bottom: 2rem;
+}
+
+/* Buttons */
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.btn-primary {
+  background-color: #282a2b;
+  outline: 2px solid white;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #dfe1e4;
+  color: black;
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background-color: #fff;
+  color: #1a1a1a;
+  border: 1px solid #ddd;
+}
+
+.btn-secondary:hover {
+  background-color: #f5f5f5;
+  transform: translateY(-2px);
+}
+
+/* Hero Image */
+.hero-image-wrapper {
+  /* max-width: 45%; */
+  animation: fadeInRight 0.8s ease-out;
+}
+
+.hero-image {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Animations */
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 3rem 1.5rem;
+  }
+
+  .hero-content {
+    max-width: 100%;
+    margin-bottom: 2rem;
+  }
+
+  .hero-image-wrapper {
+    max-width: 80%;
+  }
+
+  .hero-heading {
+    font-size: 2.25rem;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 2rem 1rem;
+  }
+
+  .hero-heading {
+    font-size: 1.875rem;
+  }
+
+  .hero-description {
+    font-size: 0.9375rem;
+  }
+
+  .hero-image-wrapper {
+    order: -1;
+    max-width: 40%;
+  }
+
+  .btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.875rem;
+  }
+  .hero-buttons{
+    display: flex;flex-direction: column;
+    align-items: center;
+  }
+}
