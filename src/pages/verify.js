@@ -32,8 +32,8 @@ const Verify = () => {
 
   return (
     <div style={{ padding: "2rem" }}>
-      <h2 >Email Verification</h2>
-      <p >{message}</p>
+      <h2 style={{color:"white"}} >Email Verification</h2>
+      <p  style={{color:"white"}}>{message}</p>
     </div>
   );
 };

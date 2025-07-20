@@ -6,13 +6,20 @@ const AppStateContext = createContext();
 
 export const AppStateProvider = ({ children }) => {
   const [currentPage, setCurrentPage] = useState('history');
-  const [files,setfiles] = useState(null);
+  const [line,setprogress] = useState({value:0,fast:false});
+  const [files,setfiles] = useState([]);
+  const [history,sethistory] = useState([]);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
    const [confirmationState, setConfirmationState] = useState({
     show: false,
     message: '',
     resolve: null
   });
+
+  const setline = async (value,isfast)=>{
+    console.log(value,isfast)
+       setprogress({value:value,fast:isfast || false});
+  }
 
   console.log("this is app context");
   const showConfirmation = (message) => {
@@ -159,6 +166,10 @@ export const AppStateProvider = ({ children }) => {
     navItems,
     showToast,
     files,
+    line,
+    setline,
+    sethistory,
+    history,
     
     setfiles,
     showConfirmation,

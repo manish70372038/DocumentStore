@@ -1,19 +1,5 @@
 const sdk = require("node-appwrite");
-
-module.exports = async function ({ req, res, log }) {
-  log("Function is running");
-
-  // Handle CORS preflight request
-  if (req.method === "OPTIONS") {
-    return res.send("", 204, {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Headers": "*",
-      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-    });
-  }
-
-  // Setup Appwrite Client
-  const client = new sdk.Client()
+const client = new sdk.Client()
     .setEndpoint(process.env.REACT_APP_APPWRITE_ENDPOINT)
     .setProject(process.env.REACT_APP_APPWRITE_PROJECT_ID)
     .setKey(process.env.REACT_APP_APPWRITE_PROJECT_API_KEY);
@@ -23,6 +9,20 @@ module.exports = async function ({ req, res, log }) {
   const databaseId = process.env.REACT_APP_APPWRITE_DATABASE_ID;
   const collectionId = process.env.REACT_APP_APPWRITE_COLLECTION_ID;
 
+
+module.exports = async function ({ req, res, log }) {
+  log("Function is running");
+  
+    if (req.method === "OPTIONS") {
+    return res.send("", 204, {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "*",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    });
+  }
+
+  // Setup Appwrite Client
+  
   try {
     const body = JSON.parse(req.bodyRaw || '{}');
     const work = body.work;

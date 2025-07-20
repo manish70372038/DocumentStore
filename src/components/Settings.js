@@ -29,30 +29,41 @@ import { useAuthState } from "../Context/Authcontext";
 import { useAppState } from "../Context/AppStateContext";
 
 const Settings = () => {
-  const { showConfirmation,showToast } = useAppState();
+  const { showConfirmation,showToast,setline } = useAppState();
   const { updateuser, user} = useAuthState();
   const navigate = useNavigate();
 
   const logout = async (e) => {
     e.preventDefault();
     try {
+      await setline(90,true)
       const response = await appwriteAuth.logout();
       console.log(response);
       if (response.success) {
         updateuser(null);
+        showToast.success(response.message);
         navigate("/");
-        return 
+       
       }
-      showToast.error(response.message,5000);
+      else{
+
+        showToast.error(response.message,5000);
+      }
 
     } catch (error) {
       showToast.error(error.message,5000);
+    } finally{
+      setline(0);
     }
   };
 
  const deleteaccount = async(e)=>{
   e.preventDefault();
   try {
+const isconfirm = await showConfirmation(
+  "Are you sure you want to delete your account?\nThis action is permanent and cannot be undone."
+);    if(!isconfirm)return;
+    await setline(90,true)
    const response =  await callAppwriteFunction("post",{userId:user?.$id,work:"deleteAccount"});
    console.log(response);
    if(response.success)
@@ -60,14 +71,19 @@ const Settings = () => {
     showToast.success(response.message);
      updateuser(null);
      navigate("/");
-
    }
-   showToast.error(response.message);
+   else{
+
+    showToast.error(response.message);
+    }
 
   } catch (error) {
     console.log(error)
     showToast.error(error.message);
     
+  }
+  finally{
+    setline(0)
   }
 
  }

@@ -9,7 +9,8 @@ import { useAppState } from "../Context/AppStateContext";
 
 const SignupForm = () => {
   const {
-    showToast
+    showToast,
+    setline,
   } = useAppState();
   
   const [showPassword, setShowPassword] = useState(false);
@@ -33,28 +34,29 @@ const SignupForm = () => {
     e.preventDefault();
     setLoading(true);
     setError("");
+    await setline(70,true)
     
     try {
       const result = await appwriteAuth.signUp(
         formData.email,
         formData.password
       );
+     await setline(90,true)
       if(result.success)
         {
         showToast.success(result.message);
-        return;
-
       }
-      showToast.error(result.message);
-
-   
-
+      else
+      {
+        showToast.error(result.message);
+      }
     } catch (err) {
       console.error("Error during registration:", err.message);
       setError(err.message);
       showToast.error(err.message);
     } finally {
       setLoading(false);
+       await setline(0)
     }
   };
 

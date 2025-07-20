@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./dashboard.css";
-import { uploadFileForUser } from "../configs/appwriteconfig";
+import { createHistoryEntry, formatHistoryData, gethistory, uploadFileForUser } from "../configs/appwriteconfig";
 import {
   FaUser,
   FaFileAlt,
@@ -22,7 +22,7 @@ import { initStorageSystem ,listFilesForUser} from "../configs/appwriteconfig";
 await initStorageSystem();
 
 const Dashboard = () => {
-  const { toast, setToast, showToast, showConfirmation,setfiles } = useAppState();
+  const { toast, setToast, showToast, showConfirmation,setfiles,setline ,sethistory} = useAppState();
   const [page, setPage] = useState(localStorage.getItem("page") || "documents");
   const [isMobile, setIsMobile] = useState(false);
   const [showUploadPopup, setShowUploadPopup] = useState(false);
@@ -74,29 +74,44 @@ const Dashboard = () => {
   };
 
   const handleUpload = async () => {
-    const isconfirm = await showConfirmation("are your sure ?");
-    if (!isconfirm) return;
+
     console.log("uploaded data", uploadData.file);
     if (!uploadData.file) {
       showToast.error("file not selected");
       return;
     }
-    const response = await uploadFileForUser(uploadData.file,{isPublic:uploadData.isPublic,allowedUsers:uploadData.allowedUsers,password:uploadData.filePassword});
-    if (!response.success) {
-      showToast.error("file not uploaded try again or check connection");
-      return;
+    await setline(40,true);
+    try {
+      
+      const response = await uploadFileForUser(uploadData.file,{isPublic:uploadData.isPublic,allowedUsers:uploadData.allowedUsers,password:uploadData.filePassword});
+      if (!response.success) {
+      showToast.error(response.message);
     }
-    showToast.success("Docuemnt Uploaded Successfully");
-    console.log(response);
-    setfiles((prev) => [...prev, response.newfile]);
-    setShowUploadPopup(false);
-    setUploadData({
-      fileName: "",
-      filePassword: "",
-      file: null,
-      allowedUsers: [],
-      isPublic: false,
-    });
+    else{
+      const newfile = response.newfile;
+      await setline(90,true)
+      const result = await createHistoryEntry({id:newfile.id,name:newfile.name,fileType:newfile.fileType,fileSize:newfile.fileSize,uploadedAt:newfile.uploadedAt,userId:newfile.userId})
+      console.log("creating history result",result)
+      showToast.success("Docuemnt Uploaded Successfully");
+      console.log(response);
+      const formatehistory = await formatHistoryData(newfile);
+      setfiles((prev) => [response.newfile,...prev]);
+      sethistory((prev) => [formatehistory,...prev]);
+      setShowUploadPopup(false);
+      setUploadData({
+        fileName: "",
+        filePassword: "",
+        file: null,
+        allowedUsers: [],
+        isPublic: false,
+      });
+    }
+  } catch (error) {
+       showToast.error(error.message);
+  }
+  finally{
+   await setline(0)
+  }
   };
 
   const filteredUsers = availableUsers.filter(
@@ -105,9 +120,29 @@ const Dashboard = () => {
       user.email.toLowerCase().includes(userSearch.toLowerCase())
   );
   const perfomrminitials = async()=>{
+    await setline(50,true);
      const response = await listFilesForUser();
-     setfiles(response.files);
-     console.log(response);
+     if(response.success)
+      {
+       setfiles(response.files);
+       console.log(response);
+     }
+     else{
+      showToast.error(response.message);
+     }
+     await setline(90,true)
+    const result = await gethistory();
+    console.log(result);
+     if(result.success)
+     {
+      sethistory(result.history);
+     }
+     else{
+
+       showToast.error(result.message);
+      }
+      await setline(0)
+     
   }
 
   useEffect(() => {

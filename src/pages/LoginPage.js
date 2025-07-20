@@ -11,7 +11,7 @@ const LoginForm = () => {
   const navigate = useNavigate()
   const [email,setemail] = useState("")
   const [password,setpassword] = useState("")
-  const {showToast} = useAppState()
+  const {showToast,setline} = useAppState()
   const {updateuser} = useAuthState();
   const [showPassword, setShowPassword] = useState(false);
   const [islogingin,setislogingin] = useState(false)
@@ -26,6 +26,7 @@ const LoginForm = () => {
     e.preventDefault();
     try {
       setislogingin(true);
+     await setline(90,true);
       if(isforget)
       {
        const response = await appwriteAuth.requestPasswordReset(email);
@@ -33,9 +34,12 @@ const LoginForm = () => {
        if(response.success)
        {
         showToast.success(response.message);
+       await setline(0)
         return
        }
        showToast.error(response.message);
+     await setline(0)
+
        return;
       }
       const response =  await appwriteAuth.login(email, password);
@@ -44,13 +48,17 @@ const LoginForm = () => {
       {
         response.user.name = response.user.email.split("@")[0];
         updateuser(response.user);
+       await setline(0)
+       showToast.success(response.message);
         navigate(`/user/${response.user.$id}`)
         return;
 
       }
+     await setline(0)
       showToast.error(response.message);
       
     } catch (error) {
+     await setline(0)
       console.log(error.message);
       showToast.error(error.message);
       

@@ -117,19 +117,7 @@ export const appwriteAuth = {
       return { success: false, user: null , message:error.message };
     }
   },
-  async deleteAccount() {
-    try {
-      // Step 1: Get user ID (optional, for confirmation/logging)
-      const user = await account.get();
-
-      // Step 2: Delete the user account
-      await account.delete();
-
-      return { success: true, message: "Account deleted successfully." };
-    } catch (error) {
-      return { success: false, message: error.message };
-    }
-  }
+  
 
   
 };

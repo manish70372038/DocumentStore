@@ -23,8 +23,18 @@ export const formatBytes = (bytes, decimals = 2) => {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 };
 const Profile = () => {
-   const {showToast,documents} = useAppState();
+  const {showToast,documents,files} = useAppState();
+  const [storage,setstorage] = useState()
    const {user} = useAuthState()
+
+   useEffect(()=>{
+    let total=0;
+    files?.forEach(element => {
+      total = total + element.fileSize;
+    });
+    setstorage(total);
+    
+   },[files])
   
     // const [user, setUser] = useState({
     //   name: "John Doe",
@@ -144,11 +154,11 @@ const Profile = () => {
                 <h4>Document Statistics</h4>
                 <div className="stats-grid">
                   <div className="stat-card">
-                    <div className="stat-value">{documents.length}</div>
+                    <div className="stat-value">{files.length}</div>
                     <div className="stat-label">Total Documents</div>
                   </div>
                   <div className="stat-card">
-                    <div className="stat-value">{formatBytes(user.totalStorageUsed)}</div>
+                    <div className="stat-value">{formatBytes(storage)}</div>
                     <div className="stat-label">Storage Used</div>
                   </div>
                 </div>
