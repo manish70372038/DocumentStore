@@ -1,11 +1,11 @@
 // routes.js
-import React from "react";
-const SignupForm = React.lazy(()=>import("../components/WithEmail")) 
-const LandingPage = React.lazy(() => import("../pages/LandingPage"));
-const LoginForm = React.lazy(() => import("../pages/LoginPage"));
-const Dashboard = React.lazy(() => import("../pages/DashboardPage"));
-const Verify = React.lazy(() => import("../pages/verify"));
-const ResetPasswordForm  = React.lazy(() => import("../pages/resetpassword"));
+
+import SignupForm from "../components/WithEmail";
+import LandingPage from "../pages/LandingPage";
+import LoginForm from "../pages/LoginPage";
+import Dashboard from "../pages/DashboardPage";
+import Verify from "../pages/verify";
+import ResetPasswordForm from "../pages/resetpassword";
 console.log("normal routconfig file");
 const setRoutes = async (user)=>{
  // Route Configuration

@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import '../components/withemail.css';
 import { Link, useNavigate } from 'react-router-dom';
-import { account, ID } from "../configs/appwriteconfig";
 import { useAuthState } from '../Context/Authcontext';
 import { appwriteAuth } from '../Auth/appwriteauth';
 import { useAppState } from '../Context/AppStateContext';
-import setRoutes from '../configs/routconfig';
 
 const LoginForm = () => {
   const navigate = useNavigate()
