@@ -8,6 +8,7 @@ export const client = new Client()
 
 const account = new Account(client);
 const BASE_URL = process.env.BASE_URL;
+console.log("this is base url",BASE_URL);
 
 export const appwriteAuth = {
   // ✅ Sign Up and Force Verification
