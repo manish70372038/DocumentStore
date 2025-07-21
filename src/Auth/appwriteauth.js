@@ -32,6 +32,7 @@ export const appwriteAuth = {
         message: "Verification email sent. Please check your inbox.",
       };
     } catch (error) {
+      await account.deleteSession("current");
       console.error("Signup error:", error);
       return { success: false, message: error.message };
     }
