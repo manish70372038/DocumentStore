@@ -13,7 +13,7 @@ import {
   FaShare,
   FaCopy,
 } from "react-icons/fa";
-import { getFilePreview } from "../configs/appwriteconfig";
+import { getFileDownload, getFilePreview } from "../configs/appwriteconfig";
 
 export const formatDate = (isoDate) => {
   const date = new Date(isoDate);
@@ -28,7 +28,7 @@ export const formatDate = (isoDate) => {
   };
 
 export default function Documents() {
-  const { files } = useAppState();
+  const { files ,showToast,setline} = useAppState();
   const [documents, setDocuments] = useState([
     {
       id: 1,
@@ -99,15 +99,48 @@ export default function Documents() {
 
   const handleOpenDocument = async (doc) => {
     console.log(doc);
-    const response = await getFilePreview("684eaec9002c0724a48e");
+    const response = await getFilePreview(doc.id);
     console.log(response);
-    // const doc = files.find((d) => d.id === id);
-    // alert(`Opening document: ${doc.name}`);
+    if(response.success)
+      {
+      const a = document.createElement('a');
+      a.href = response.url;
+      window.open(response.url, "_blank");
+      a.target = '_blank';  
+      a.click(); 
+    }
+    else{
+      showToast.error(response.message);
+    }
+
+    await setline(0)
+   
   };
 
-  const handleDownloadDocument = (id) => {
-    const doc = documents.find((d) => d.id === id);
-    alert(`Downloading document: ${doc.name}`);
+  const handleDownloadDocument = async (id) => {
+    if(!id) {
+      showToast.error("Invalid Document")
+      return
+    }
+
+    await setline(80,true)
+    // return;
+    const response = await getFileDownload(id);
+    console.log(response)
+    if(response.success)
+      {
+      showToast.success("Downloading...")
+      const a = document.createElement('a');
+      a.href = response.url;
+      a.click(); 
+
+    }
+    else{
+      showToast.error(response.message);
+    }
+
+    await setline(0)
+   
   };
 
   const handleEditDocument = (id) => {
@@ -118,9 +151,23 @@ export default function Documents() {
     const doc = documents.find((d) => d.id === id);
     alert(`deleting document: ${doc.name}`);
   };
+  const handleShareDocument = async (id) => {
+    if (navigator.share) {
+    navigator.share({
+      title: 'Check this out!',
+      text: 'Here is a file you might like.',
+      url: 'https://your-file-url.com', // or Appwrite file view/download link
+    })
+    .then(() => console.log('✅ Shared successfully'))
+    .catch((error) => console.error('❌ Error sharing', error));
+  } else {
+    alert('Sharing not supported in your browser');
+  }
+  };
   const filteredDocuments = files?.filter((doc) =>
     doc.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+ 
  
   return (
     <div className="documents-container">
@@ -169,7 +216,7 @@ export default function Documents() {
               </button>
               <button
                 className="action-btn share-btn"
-                onClick={() => handleOpenDocument(doc.id)}
+                onClick={() => handleShareDocument(doc.id)}
                 title="share document"
               >
                 <FaShare />

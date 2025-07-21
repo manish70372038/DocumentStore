@@ -117,17 +117,28 @@ export const verifyDocumentAccess = async (fileId, password = null) => {
 };
 
 export const getFileDownload = async (fileId, password = null) => {
-  const { hasAccess } = await verifyDocumentAccess(fileId, password);
-  if (!hasAccess) return { success: false, error: "Access denied" };
-  const url = storage.getFileDownload(bucketId, fileId).href;
-  return { success: true, url };
+  // const { hasAccess } = await verifyDocumentAccess(fileId, password);
+  // if (!hasAccess) return { success: false, error: "Access denied" };
+  try {
+    const url = storage.getFileDownload(bucketId, fileId);
+      return { success: true, message:"succesfully fetched download url!" ,url};
+    
+  } catch (error) {
+    return {success:false,message:error.message}
+  }
+  
 };
 
 export const getFilePreview = async (fileId, password = null) => {
-  const { hasAccess } = await verifyDocumentAccess(fileId, password);
-  if (!hasAccess) return { success: false, error: "Access denied" };
-  const url = storage.getFilePreview(bucketId, fileId).href;
-  return { success: true, url };
+  // const { hasAccess } = await verifyDocumentAccess(fileId, password);
+  // if (!hasAccess) return { success: false, error: "Access denied" };
+  try {
+    const url = storage.getFileView(bucketId, fileId);
+    return { success: true, message:"File preview access!",url };
+    
+  } catch (error) {
+    return {success:false,message:error.message}
+  }
 };
 
 export const updateDocumentPermissions = async (fileId, updates) => {

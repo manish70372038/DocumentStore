@@ -54,7 +54,7 @@ const Hero = () => {
         <div className="hero-buttons">
           <button onClick={() => navigate("/signin")} className="btn btn-primary">
               {/* style={{ padding: "0px 10px", color: "green" }} */}
-            Log In
+            Access Your Acoount
           </button>
           <button
             onClick={() => navigate("/signupWithEmail")}

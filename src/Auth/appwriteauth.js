@@ -7,7 +7,8 @@ export const client = new Client()
   .setProject(process.env.REACT_APP_APPWRITE_PROJECT_ID);
 
 const account = new Account(client);
-const BASE_URL = `https://${process.env.REACT_APP_VERCEL_PROJECT_PRODUCTION_URL}`;
+const domain = process.env.REACT_APP_VERCEL_PROJECT_PRODUCTION_URL || "localhost:3000"
+const BASE_URL = `http://${domain}`;
 console.log("this is base url",BASE_URL);
 
 export const appwriteAuth = {
