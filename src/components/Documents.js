@@ -13,7 +13,7 @@ import {
   FaShare,
   FaCopy,
 } from "react-icons/fa";
-import { getFileDownload, getFilePreview } from "../configs/appwriteconfig";
+import { createHistoryEntry, deleteFileForUser, getFileDownload, getFilePreview } from "../configs/appwriteconfig";
 
 export const formatDate = (isoDate) => {
   const date = new Date(isoDate);
@@ -28,7 +28,7 @@ export const formatDate = (isoDate) => {
   };
 
 export default function Documents() {
-  const { files ,showToast,setline} = useAppState();
+  const { files ,showToast,setline,setfiles,showConfirmation} = useAppState();
   const [documents, setDocuments] = useState([
     {
       id: 1,
@@ -129,11 +129,9 @@ export default function Documents() {
     console.log(response)
     if(response.success)
       {
-      showToast.success("Downloading...")
-      const a = document.createElement('a');
-      a.href = response.url;
-      a.click(); 
-
+        const a = document.createElement('a');
+        a.href = response.url;
+        a.click(); 
     }
     else{
       showToast.error(response.message);
@@ -144,12 +142,34 @@ export default function Documents() {
   };
 
   const handleEditDocument = (id) => {
-    const doc = documents.find((d) => d.id === id);
-    alert(`Editing document: ${doc.name}`);
+    // const doc = documents.find((d) => d.id === id);
+    // alert(`Editing document: ${doc.name}`);
   };
-  const handleDeleteDocument = (id) => {
-    const doc = documents.find((d) => d.id === id);
-    alert(`deleting document: ${doc.name}`);
+  const handleDeleteDocument = async (doc) => {
+    const isconfirm = await showConfirmation("Deleting the docuement")
+    if(!isconfirm) return;
+    await  setline(60,true)
+       const response = await deleteFileForUser(doc.id)
+       console.log(response);
+       if(response.success)
+       {
+        await setline(90,true)
+        const result = await createHistoryEntry(doc,"Deleted")
+        console.log("result is ",result)
+        if(result.success){
+          setfiles((prev) => prev.filter((file) => file.id !== doc.id));
+          showToast.success(response.message)
+        }
+        else{
+          showToast.error("History not created")
+        }
+
+       }
+       else{
+        showToast.error(response.message)
+       }
+       await setline(0)
+     
   };
   const handleShareDocument = async (id) => {
     if (navigator.share) {
@@ -244,7 +264,7 @@ export default function Documents() {
               </button>
               <button
                 className="action-btn"
-                onClick={() => handleDeleteDocument(doc.id)}
+                onClick={() => handleDeleteDocument(doc)}
                 title="Delete"
               >
                 <FaTrash />

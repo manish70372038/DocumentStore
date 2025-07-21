@@ -202,7 +202,7 @@ export const listFilesForUser = async () => {
 
 export const deleteFileForUser = async (fileId) => {
   try {
-    if (!userId) throw new Error("User not authenticated");
+    // if (!userId) throw new Error("User not authenticated");
     const docs = await databases.listDocuments(
       databaseId,
       collectionId,
@@ -214,9 +214,9 @@ export const deleteFileForUser = async (fileId) => {
 
     await storage.deleteFile(bucketId, fileId);
     await databases.deleteDocument(databaseId, collectionId, doc.$id);
-    return { success: true };
+    return { success: true, message:"Docuement deleted Successfully!",doc };
   } catch (error) {
-    return { success: false, error: error.message };
+    return { success: false, message: error.message };
   }
 };
 
@@ -295,8 +295,8 @@ export const createHistoryEntry = async (doc,action="Uploaded") => {
         type: doc.fileType,
         action: action,
         size: doc.fileSize,
-        time: doc.uploadedAt,
-        userId: doc.userId,
+        time: action==="Uploaded"? doc.uploadedAt : new Date().toISOString() ,
+        userId: doc.userId || userId,
       }
     );
 
