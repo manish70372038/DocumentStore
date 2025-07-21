@@ -7,7 +7,7 @@ export const client = new Client()
   .setProject(process.env.REACT_APP_APPWRITE_PROJECT_ID);
 
 const account = new Account(client);
-const BASE_URL = process.env.BASE_URL;
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 console.log("this is base url",BASE_URL);
 
 export const appwriteAuth = {
