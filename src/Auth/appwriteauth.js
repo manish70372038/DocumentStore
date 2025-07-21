@@ -7,6 +7,7 @@ export const client = new Client()
   .setProject(process.env.REACT_APP_APPWRITE_PROJECT_ID);
 
 const account = new Account(client);
+const BASE_URL = process.env.BASE_URL;
 
 export const appwriteAuth = {
   // ✅ Sign Up and Force Verification
@@ -19,7 +20,7 @@ export const appwriteAuth = {
       await account.createEmailPasswordSession(email, password);
 
       // ✉️ Send verification email
-      await account.createVerification("http://localhost:3000/verify");
+      await account.createVerification(`${BASE_URL}/verify`);
 
       // 🔐 Logout immediately after sending verification
         await account.deleteSession("current");
@@ -61,7 +62,7 @@ export const appwriteAuth = {
   // ✅ Resend Email Verification
   async resendVerification() {
     try {
-      await account.createVerification("http://localhost:3000/verify");
+      await account.createVerification(`${BASE_URL}/verify`);
       return { success: true, message: "Verification email resent." };
     } catch (error) {
       return { success: false, message: error.message };
@@ -81,7 +82,7 @@ export const appwriteAuth = {
   // ✅ Request Password Reset
   async requestPasswordReset(email) {
     try {
-      await account.createRecovery(email, "http://localhost:3000/reset-password");
+      await account.createRecovery(email, `${BASE_URL}/reset-password`);
       return { success: true, message: "If the email exists, a recovery link was sent." };
     } catch (error) {
       return { success: false, message: error.message };
