@@ -25,6 +25,7 @@ const Dashboard = () => {
   const { toast, setToast, showToast, showConfirmation,setfiles,setline ,sethistory} = useAppState();
   const [page, setPage] = useState(localStorage.getItem("page") || "documents");
   const [isMobile, setIsMobile] = useState(false);
+  const [isuploading, setisuploading] = useState(false);
   const [showUploadPopup, setShowUploadPopup] = useState(false);
 
   const [uploadData, setUploadData] = useState({
@@ -74,13 +75,15 @@ const Dashboard = () => {
   };
 
   const handleUpload = async () => {
+    if(isuploading) return;
+    setisuploading(true);
 
     console.log("uploaded data", uploadData.file);
     if (!uploadData.file) {
       showToast.error("file not selected");
       return;
     }
-    await setline(40,true);
+    await setline(70);
     try {
       
       const response = await uploadFileForUser(uploadData.file,{isPublic:uploadData.isPublic,allowedUsers:uploadData.allowedUsers,password:uploadData.filePassword});
@@ -111,6 +114,7 @@ const Dashboard = () => {
   }
   finally{
    await setline(0)
+   setisuploading(false)
   }
   };
 
@@ -351,9 +355,9 @@ const Dashboard = () => {
               <button
                 className="upload-now-btn"
                 onClick={handleUpload}
-                disabled={!uploadData.file}
+               disabled={!uploadData.file || isuploading}
               >
-                <FaUpload /> Upload Now
+                <FaUpload />{isuploading?"Uploading ...":"Upload Now"}
               </button>
             </div>
           </div>

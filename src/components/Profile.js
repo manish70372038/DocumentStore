@@ -104,7 +104,7 @@ const Profile = () => {
                 <h3>{user.name}</h3>
                 {user.emailVerification && (
                   <span className="vip-badge">
-                    <FaCrown className="vip-icon" /> VIP Member
+                    <FaCrown className="vip-icon" />
                   </span>
                 )}
               </div>
