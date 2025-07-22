@@ -7,7 +7,7 @@ console.log("this is auth pre");
  const response = await appwriteAuth.getUser();
     if(response.success)
       {
-        response.user.name = response.user.email.split("@")[0]
+        response.user.name = response.user.name?.trim() === "" ? response.user.email.split("@")[0] : response.user.name;
       } 
  const Routes = await setRoutes(response?.user || null);
    

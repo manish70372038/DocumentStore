@@ -314,3 +314,16 @@ export const createHistoryEntry = async (doc,action="Uploaded") => {
     };
   }
 };
+
+export const updateName = async(name)=>{
+  if(!name) return {success:false,message:"Name is required"}
+  try {
+    const data = await account.updateName(name)
+    return {success:true,message:"Name updated successfully!",data}
+  } catch (error) {
+    console.log(error.message)
+    return{success:false,message:error.message};
+    
+  }
+
+}

@@ -468,11 +468,10 @@
 }
 
 /* Profile Page Styles */
-/* .profile-container {
-  max-width: 800px;
+.profile-container {
   margin: 0 auto;
-  padding: 20px;
-} */
+  padding: 0px;
+}
 
 .profile-subtitle {
   color: var(--text-secondary);
@@ -536,6 +535,7 @@
 }
 
 .profile-info {
+  overflow: hidden;
   flex: 1;
   min-width: 200px;
 }
@@ -543,6 +543,10 @@
 .profile-name {
   display: flex;
   align-items: center;
+  overflow-wrap: break-word; 
+  word-wrap: break-word;    
+  word-break: break-word;    
+  overflow: hidden;
   gap: 10px;
   margin-bottom: 5px;
 }
@@ -764,12 +768,16 @@
   .avatar-container {
     margin: 0 auto;
   }
-  
+  .profile-card{
+    /* overflow: */
+  }
   .profile-info {
+    overflow: hidden;
     text-align: center;
   }
   
   .profile-name {
+    /* word-break: break-word; */
     justify-content: center;
   }
   
