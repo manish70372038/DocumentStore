@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import "./App.css";
 import { BrowserRouter,} from "react-router-dom";
 import { useAuthState } from "./Context/Authcontext";
@@ -9,7 +8,9 @@ import Progressbar from "./components/progress";
 
 function App() {
   const {toast,setToast,line} = useAppState()
-  const {routes,user} = useAuthState();
+  const {routes} = useAuthState();
+
+ 
 
   return (
     <BrowserRouter>

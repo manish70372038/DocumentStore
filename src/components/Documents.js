@@ -157,12 +157,13 @@ export default function Documents() {
         const result = await createHistoryEntry(doc,"Deleted")
         console.log("result is ",result)
         if(result.success){
-          setfiles((prev) => prev.filter((file) => file.id !== doc.id));
           showToast.success(response.message)
         }
         else{
-          showToast.error("History not created")
+          showToast.error(response.message)
         }
+         setfiles((prev) => prev.filter((file) => file.id !== doc.id));
+
 
        }
        else{
