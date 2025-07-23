@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { auth } from "../configs/firebaseconfig";
-import { getAuth, createUserWithEmailAndPassword, sendSignInLinkToEmail } from "firebase/auth";
 import "./withemail.css";
 import { appwriteAuth } from "../Auth/appwriteauth";
 import { useAppState } from "../Context/AppStateContext";
@@ -61,6 +59,8 @@ const SignupForm = () => {
   };
 
   return (
+    <div className="main-container">
+
     <div className="container">
       <div className="header">
         <h1>Create Account</h1>
@@ -134,6 +134,7 @@ const SignupForm = () => {
           </div>
         </form>
       </div>
+    </div>
     </div>
   );
 };

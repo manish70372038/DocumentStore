@@ -1,7 +1,5 @@
-// appwriteAuth.js
 import { Client, Account, ID } from "appwrite";
 
-// ✅ Configure the Appwrite Client
 export const client = new Client()
   .setEndpoint(process.env.REACT_APP_APPWRITE_ENDPOINT)
   .setProject(process.env.REACT_APP_APPWRITE_PROJECT_ID);
@@ -12,19 +10,15 @@ const BASE_URL = `https://${domain}`;
 console.log("this is base url",BASE_URL);
 
 export const appwriteAuth = {
-  // ✅ Sign Up and Force Verification
   async signUp(email, password) {
     try {
       const user = await account.create(ID.unique(), email, password);
       console.log("User created:", user);
 
-      // 🔐 Login to create session temporarily
       await account.createEmailPasswordSession(email, password);
 
-      // ✉️ Send verification email
       await account.createVerification(`${BASE_URL}/verify`);
 
-      // 🔐 Logout immediately after sending verification
         await account.deleteSession("current");
 
 
@@ -39,7 +33,6 @@ export const appwriteAuth = {
     }
   },
 
-  // ✅ Login only after verified
   async login(email, password) {
     try {
       const session = await account.createEmailPasswordSession(email, password);
@@ -47,7 +40,6 @@ export const appwriteAuth = {
       const user = await account.get();
 
       if (!user.emailVerification) {
-        // 🔐 Force logout if not verified
         await account.deleteSession("current");
         return {
           success: false,
@@ -62,17 +54,6 @@ export const appwriteAuth = {
     }
   },
 
-  // ✅ Resend Email Verification
-  async resendVerification() {
-    try {
-      await account.createVerification(`${BASE_URL}/verify`);
-      return { success: true, message: "Verification email resent." };
-    } catch (error) {
-      return { success: false, message: error.message };
-    }
-  },
-
-  // ✅ Confirm Verification (to call from /verify page)
   async confirmVerification(userId, secret) {
     try {
       await account.updateVerification(userId, secret);
@@ -82,7 +63,6 @@ export const appwriteAuth = {
     }
   },
 
-  // ✅ Request Password Reset
   async requestPasswordReset(email) {
     try {
       await account.createRecovery(email, `${BASE_URL}/reset-password`);
@@ -92,7 +72,6 @@ export const appwriteAuth = {
     }
   },
 
-  // ✅ Complete Password Reset
   async resetPassword(userId, secret, newPassword) {
     try {
       await account.updateRecovery(userId, secret, newPassword);
@@ -102,7 +81,6 @@ export const appwriteAuth = {
     }
   },
 
-  // ✅ Logout
   async logout() {
     try {
       await account.deleteSession("current");
@@ -112,7 +90,6 @@ export const appwriteAuth = {
     }
   },
 
-  // ✅ Get Current User
   async getUser() {
     try {
       const user = await account.get();
@@ -125,3 +102,4 @@ export const appwriteAuth = {
 
   
 };
+

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import '../components/withemail.css';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthState } from '../Context/Authcontext';
 import { appwriteAuth } from '../Auth/appwriteauth';
 import { useAppState } from '../Context/AppStateContext';
+import { setuserId, updateName } from '../configs/appwriteconfig';
 
 const LoginForm = () => {
   const navigate = useNavigate()
@@ -44,16 +46,18 @@ const LoginForm = () => {
       console.log(response);
       if(response.success)
       {
-        response.user.name = response.user.email.split("@")[0];
-        updateuser(response.user);
+        response.user.name = response.user.name?.trim() === "" ? (await updateName(response.user.email.split("@")[0])).data.name : response.user.name;
+         await setuserId(response.user.$id)
+       await updateuser(response.user);
        await setline(0)
+       navigate(`/user/${response.user.$id}`)
        showToast.success(response.message);
-        navigate(`/user/${response.user.$id}`)
         return;
 
       }
      await setline(0)
       showToast.error(response.message);
+      console.log(response.message)
       
     } catch (error) {
      await setline(0)
@@ -68,6 +72,8 @@ const LoginForm = () => {
   }
 
   return (
+    <div className='main-container'>
+
     <div className="container">
       <div className="header">
         <h1>{isforget ? "Enter Your Credentials": "Login Account"}</h1>
@@ -101,11 +107,13 @@ const LoginForm = () => {
                 required
                 onChange={(e)=>setpassword(e.target.value)}
                 />
-              <i
-                className={`toggle-password fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}
-                id="togglePassword"
-                onClick={togglePasswordVisibility}
-                ></i>
+               <button 
+                              type="button" 
+                              className="toggle-password"
+                              onClick={togglePasswordVisibility}
+                            >
+                              {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
             </div>
           </div>
               }
@@ -138,6 +146,7 @@ const LoginForm = () => {
         </form>
       </div>
     </div>
+  </div>
   );
 };
 

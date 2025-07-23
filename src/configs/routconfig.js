@@ -6,9 +6,7 @@ const LoginForm = React.lazy(() => import("../pages/LoginPage"));
 const Dashboard = React.lazy(() => import("../pages/DashboardPage"));
 const Verify = React.lazy(() => import("../pages/verify"));
 const ResetPasswordForm  = React.lazy(() => import("../pages/resetpassword"));
-console.log("normal routconfig file");
 const setRoutes = async (user)=>{
- // Route Configuration
     const routes = [
   {
     path: "/",

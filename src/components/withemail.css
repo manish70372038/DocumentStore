@@ -11,14 +11,17 @@
   --success: #4caf50; /* Green for success */
   --border-color: #333333; /* Dark borders */
 }
-body{
-    background-color: var(--darker);
+.main-container{
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .container {
   max-width: 500px;
-  margin: 2rem auto;
-  background-color: var(--dark);
+  /* background-color: var(--dark); */
   border-radius: 12px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   overflow: hidden;
@@ -27,23 +30,24 @@ body{
 }
 
 .header {
-  background-color: var(--light);
+  background-color: var(--dark);
   padding: 2rem 1.5rem;
   text-align: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--light);
 }
 
 .header h1 {
   font-size: 2rem;
   margin-bottom: 0.5rem;
   font-weight: 700;
-  color: var(--dark);
+  /* color: var(--dark); */
 }
 
 .header p {
   opacity: 0.9;
   font-size: 1rem;
-  color: var(--dark);
+  /* color: var(--dark); */
 }
 
 .form-container {
@@ -94,7 +98,7 @@ body{
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
-  color: var(--light-gray);
+  color: var(--light);
   transition: all 0.3s;
   background: none;
   border: none;
@@ -105,15 +109,6 @@ body{
   color: var(--light);
 }
 
-.otp-container {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.otp-container input {
-  flex: 1;
-}
 
 .btn {
   display: inline-block;

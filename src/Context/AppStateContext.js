@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from 'react';
-import { FaUser, FaFileAlt, FaShareAlt, FaCog, FaHistory,FaCheck, FaTimes } from 'react-icons/fa';
+import { FaUser, FaFileAlt, FaCog, FaHistory,FaCheck, FaTimes } from 'react-icons/fa';
 
 
 const AppStateContext = createContext();
@@ -17,11 +17,9 @@ export const AppStateProvider = ({ children }) => {
   });
 
   const setline = async (value,isfast)=>{
-    console.log(value,isfast)
        setprogress({value:value,fast:isfast || false});
   }
 
-  console.log("this is app context");
   const showConfirmation = (message) => {
     return new Promise((resolve) => {
       setConfirmationState({
@@ -43,42 +41,7 @@ export const AppStateProvider = ({ children }) => {
   };
 
   
-  const [documentHistory, setDocumentHistory] = useState([
-    {
-      id: 1,
-      name: "Project Proposal.docx",
-      action: "uploaded",
-      timestamp: new Date(Date.now() - 3600000),
-      fileType: "word"
-    },
-  ]);
-  
-  const [documents, setDocuments] = useState([
-    {
-      id: 1,
-      name: "Project Proposal.docx",
-      fileType: "word",
-      uploadDate: new Date(Date.now() - 3600000),
-      size: "2.4 MB"
-    },
-  ]);
-
-  const [user, setUser] = useState({
-    name: "John Doe",
-    email: "john.doe@example.com",
-    avatar: null,
-    isVip: true,
-    joinDate: new Date('2023-01-15'),
-    totalDocuments: 42,
-    totalStorageUsed: 256000000,
-    documentTypes: {
-      pdf: 12,
-      doc: 15,
-      ppt: 5,
-      xls: 7,
-      other: 3
-    }
-  });
+ 
 
   const [showUploadPopup, setShowUploadPopup] = useState(false);
   const [uploadData, setUploadData] = useState({
@@ -156,9 +119,6 @@ export const AppStateProvider = ({ children }) => {
   const value = {
     currentPage,
     isMobile,
-    documentHistory,
-    documents,
-    user,
     showUploadPopup,
     uploadData,
     toast,
@@ -167,21 +127,18 @@ export const AppStateProvider = ({ children }) => {
     showToast,
     files,
     line,
-    setline,
-    sethistory,
     history,
     
+    setline,
+    setIsMobile,
+    sethistory,
     setfiles,
     showConfirmation,
     setCurrentPage,
-    setDocumentHistory,
-    setDocuments,
-    setUser,
     setShowUploadPopup,
     setUploadData,
     setToast,
     
-    // Utility functions
     formatDate,
     formatTime,
     formatBytes,

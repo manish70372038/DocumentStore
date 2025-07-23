@@ -35,12 +35,16 @@ const Settings = () => {
 
   const logout = async (e) => {
     e.preventDefault();
+    if(!await showConfirmation("Your session on this device will be deleted you can login again any time")){
+      return;
+    }
     try {
       await setline(90,true)
       const response = await appwriteAuth.logout();
       console.log(response);
       if (response.success) {
         updateuser(null);
+        localStorage.removeItem("page");
         showToast.success(response.message);
         navigate("/");
        
@@ -95,7 +99,7 @@ const isconfirm = await showConfirmation(
         Configure your application preferences
       </p>
 
-      <div className="settings-categories">
+      <div  className="settings-categories">
         {/* Account Settings */}
         <div className="settings-category">
           <div className="category-header">

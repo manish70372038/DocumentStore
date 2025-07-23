@@ -8,10 +8,7 @@ import Progressbar from "./components/progress";
 
 function App() {
   const {toast,setToast,line} = useAppState()
-  const {routes} = useAuthState();
-
- 
-
+  const {routes} = useAuthState()
   return (
     <BrowserRouter>
         <div className="App">

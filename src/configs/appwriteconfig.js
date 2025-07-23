@@ -1,6 +1,6 @@
 import { Account ,Storage, ID, Databases, Query, Permission, Role } from "appwrite";
 import bcrypt from 'bcryptjs';
-import { client } from "../Auth/appwriteauth";
+import { client,appwriteAuth } from "../Auth/appwriteauth";
 
  const account = new Account(client);
 
@@ -10,12 +10,18 @@ const bucketId = process.env.REACT_APP_APPWRITE_BUCKET_ID;
 const databaseId = process.env.REACT_APP_APPWRITE_DATABASE_ID;
 const collectionId = process.env.REACT_APP_APPWRITE_COLLECTION_ID;
 const historyId = process.env.REACT_APP_APPWRITE_HISTORY_COLLECTION_ID;
-const user =  await account.get();
-const userId = user?.$id || null;
+let userId = null;
+try {
+  const user =  await account.get();
+  userId=user.$id
+  
+} catch (error) {
+  
+}
 console.log("this is user id",userId)
-
-
-// Example dynamic userId; replace with actual user logic
+export const setuserId = async (userid)=>{
+  userId = userid
+}
 
 
 const hashPassword = async (password) => {
@@ -117,8 +123,6 @@ export const verifyDocumentAccess = async (fileId, password = null) => {
 };
 
 export const getFileDownload = async (fileId, password = null) => {
-  // const { hasAccess } = await verifyDocumentAccess(fileId, password);
-  // if (!hasAccess) return { success: false, error: "Access denied" };
   try {
     const url = storage.getFileDownload(bucketId, fileId);
       return { success: true, message:"succesfully fetched download url!" ,url};
@@ -130,8 +134,7 @@ export const getFileDownload = async (fileId, password = null) => {
 };
 
 export const getFilePreview = async (fileId, password = null) => {
-  // const { hasAccess } = await verifyDocumentAccess(fileId, password);
-  // if (!hasAccess) return { success: false, error: "Access denied" };
+ 
   try {
     const url = storage.getFileView(bucketId, fileId);
     return { success: true, message:"File preview access!",url };
@@ -202,7 +205,6 @@ export const listFilesForUser = async () => {
 
 export const deleteFileForUser = async (fileId) => {
   try {
-    // if (!userId) throw new Error("User not authenticated");
     const docs = await databases.listDocuments(
       databaseId,
       collectionId,
@@ -309,7 +311,6 @@ export const createHistoryEntry = async (doc,action="Uploaded") => {
     console.error('Error creating history entry:', error.message);
     return {
       success: false,
-      // message: 'Failed to create history entry.',
       message: error.message,
     };
   }

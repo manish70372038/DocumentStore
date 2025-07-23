@@ -164,7 +164,10 @@ const Dashboard = () => {
   }, []);
 
   useEffect(()=>{
-    localStorage.setItem("page",page);
+    if(page!=="setings")
+    {
+      localStorage.setItem("page",page);
+    }
   },[page])
 
   return (
