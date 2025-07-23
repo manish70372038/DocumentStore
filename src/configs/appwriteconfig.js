@@ -328,3 +328,22 @@ export const updateName = async(name)=>{
   }
 
 }
+
+export const updatePassword = async (password, oldPassword) => {
+  if (!password || !oldPassword) {
+    return { success: false, message: "passwords are required" };
+  }
+
+  try {
+    const data = await account.updatePassword(password, oldPassword);
+    return { success: true, message: "Password updated successfully!", data };
+  } catch (error) {
+    console.log(error.code);
+    if(error.code===401){
+      return {success:false,message:"wrong password"}
+    }else{
+      return { success: false, message: error.message };
+
+    }
+  }
+};

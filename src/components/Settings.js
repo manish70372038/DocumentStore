@@ -27,8 +27,11 @@ import {
 } from "react-icons/fa";
 import { useAuthState } from "../Context/Authcontext";
 import { useAppState } from "../Context/AppStateContext";
+import { updatePassword } from "../configs/appwriteconfig";
 
 const Settings = () => {
+  const [passtate,setpasstate] = useState(-1);
+  const [password,setpassword] = useState("")
   const { showConfirmation,showToast,setline } = useAppState();
   const { updateuser, user} = useAuthState();
   const navigate = useNavigate();
@@ -91,6 +94,58 @@ const isconfirm = await showConfirmation(
   }
 
  }
+ const runpasswordchangeproccess = async(e)=>{
+  e.preventDefault();
+  switch (passtate) {
+    case -1:
+      setpasstate(0);
+      break;
+    case 0:
+      await setline(50,true)
+      localStorage.setItem("password","checkpassword123")
+      const response = await updatePassword(localStorage.getItem("password"),password)
+      if(response.success){ 
+        await setline(85,true)
+        const result = await updatePassword(password , localStorage.getItem("password"))
+        if(result.success){
+          setpasstate(1);
+          setpassword("");
+          showToast.success("Correct password!  enter new password in field")
+          localStorage.setItem("oldpassword",password);
+          await setline(0)
+        }
+        else{
+          localStorage.setItem("unupdatepassword",true);
+        }
+      }else{
+        showToast.error(response.message)
+      }
+        await setline(0)
+      break;
+      case 1:
+        await setline(80);
+        const res = await updatePassword(password,localStorage.getItem("oldpassword"))
+        if(res.success){
+          showToast.success(res.message)
+          localStorage.removeItem("password")
+          localStorage.removeItem("oldpassword")
+          setpasstate(-1)
+          setpassword("")
+        }else{
+          showToast.error(res.message)
+        }
+        await setline(0)
+        break;
+    default:
+      break;
+  }
+ }
+ const cencelpasswordset = (e)=>{
+  e.preventDefault();
+  setpassword("");
+  setpasstate(-1);
+
+ }
 
   return (
     <div className="settings-container">
@@ -114,10 +169,17 @@ const isconfirm = await showConfirmation(
                   <h4>Password</h4>
                   <p>Change your account password</p>
                 </div>
+                {passtate!==-1 && <button onClick={cencelpasswordset} className="upgrade-btn">  X</button> }
+               
               </div>
-              <button className="edit-btn">
-                <FaEdit /> Change
+             
+              <button onClick={runpasswordchangeproccess} className="edit-btn">
+                {passtate===0?"submit":passtate===1?"Update":<><FaEdit /> change</>}  
               </button>
+
+              {passtate !== -1 && <input  placeholder={passtate===0?"Enter current password":"Enter New Password"} style={{padding:"8px",borderRadius:"5px",background:"black",border:'none',color:"white",width:"100%",minWidth:"60%"}} type='password' onChange={(e)=> setpassword(e.target.value)} value={password}></input>}
+              {/* <div style={{display:"flex",alignItems:"center",gap:"8px",width:"100%"}}>
+              </div> */}
             </div>
             <div className="setting-item">
               <div className="setting-info">
