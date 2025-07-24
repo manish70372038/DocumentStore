@@ -12,6 +12,7 @@ const collectionId = process.env.REACT_APP_APPWRITE_COLLECTION_ID;
 const historyId = process.env.REACT_APP_APPWRITE_HISTORY_COLLECTION_ID;
 let userId = null;
 try {
+  
   const user =  await account.get();
   userId=user.$id
   
@@ -51,6 +52,10 @@ export const uploadFileForUser = async (file, permissionSettings = {}) => {
       Permission.write(Role.user(userId)),
       ...(permissionSettings.allowedUsers?.map(u => Permission.read(Role.user(u))) || [])
     ];
+    console.log("is public",permissionSettings.isPublic);
+    if (permissionSettings.isPublic) {
+  permissions.push(Permission.read(Role.any()));
+     }
 
     const fileResponse = await storage.createFile(
       bucketId,
