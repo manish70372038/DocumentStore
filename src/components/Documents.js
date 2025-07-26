@@ -56,7 +56,7 @@ export default function Documents() {
     if (response.success) {
      if (doc.fileType === "text/html") {
          const res = await runhtml(response.url,doc)
-         if(!res?.success){
+         if(!res.success){
              showToast.error(res.message);
          }
          return;
