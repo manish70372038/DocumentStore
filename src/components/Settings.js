@@ -177,7 +177,7 @@ const isconfirm = await showConfirmation(
                 {passtate===0?"submit":passtate===1?"Update":<><FaEdit /> change</>}  
               </button>
 
-              {passtate !== -1 && <input  placeholder={passtate===0?"Enter current password":"Enter New Password"} style={{padding:"8px",borderRadius:"5px",background:"black",border:'none',color:"white",width:"100%",minWidth:"60%"}} type='password' onChange={(e)=> setpassword(e.target.value)} value={password}></input>}
+              {passtate !== -1 && <input className="password-change-closebtn"  placeholder={passtate===0?"Enter current password":"Enter New Password"} style={{padding:"8px",borderRadius:"5px",background:"black",border:'none',color:"white",width:"100%",minWidth:"60%"}} type='password' onChange={(e)=> setpassword(e.target.value)} value={password}></input>}
               {/* <div style={{display:"flex",alignItems:"center",gap:"8px",width:"100%"}}>
               </div> */}
             </div>

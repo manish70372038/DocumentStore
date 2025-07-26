@@ -20,6 +20,7 @@ import {
   getFilePreview,
 } from "../configs/appwriteconfig";
 import { useAuthState } from "../Context/Authcontext";
+import { runhtml } from "../utility/util";
 
 export const formatDate = (isoDate) => {
   const date = new Date(isoDate);
@@ -53,6 +54,13 @@ export default function Documents() {
     const response = await getFilePreview(doc.id);
     console.log(response);
     if (response.success) {
+     if (doc.fileType === "text/html") {
+         const res = await runhtml(response.url,doc)
+         if(!res?.success){
+             showToast.error(res.message);
+         }
+         return;
+      }
       const a = document.createElement("a");
       a.href = response.url;
       window.open(response.url, "_blank");

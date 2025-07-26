@@ -1177,6 +1177,10 @@
   transition: background-color var(--transition-speed) ease;
 }
 
+.password-change-closebtn{
+  
+}
+
 .setting-item:last-child {
   border-bottom: none;
 }
